@@ -42,6 +42,8 @@ async function init(){
         INSERT INTO notes (txt, ranking) VALUES('Note 3', 3);
         `;
     console.log('data seeded.');
+    const port = process.env.PORT || 3000;
+    app.listen(port, ()=> console.log(`Now listening on port ${port}.`));
 }
 
 //invoking init function
