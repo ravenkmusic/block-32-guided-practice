@@ -10,6 +10,12 @@ app.use(express.json()); //parsing requests from incoming requests
 app.use(require('morgan')('dev')) // logs requests as they come
 
 //CRUD operations routes
+app.post('/api/notes', async (req, res, next) => {}); //create
+app.get('/api/notes', async (req, res, next) => {}) // read
+app.put('/api/notes/:id', async (req, res, next) => {}) //update
+app.delete('/api/notes/:id', async (req, res, next) => {}) // delete
+
+
 
 //connect to database
 
