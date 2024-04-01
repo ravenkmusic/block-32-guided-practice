@@ -3,6 +3,14 @@ const express = require('express');
 const client = new pg.Client(process.env.DATABASE_URL || 'postgres://localhost/the_acme_notes_db')
 const app = express()
 
+
+//deployment routes
+
+app.use(express.json()); //parsing requests from incoming requests
+app.use(require('morgan')('dev')) // logs requests as they come
+
+//CRUD operations routes
+
 //connect to database
 
 async function init(){
