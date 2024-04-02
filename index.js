@@ -16,7 +16,7 @@ app.use(require('morgan')('dev')) // logs requests as they come
 app.post('/api/notes', async (req, res, next) => {
     try {
         const SQL = `
-            INSERT INTO notes (text) VALUES($1) RETURNING *
+            INSERT INTO notes (text) VALUES({$1}) RETURNING *
             `;
         const response = await client.query(SQL, [req.body.txt]);
         res.send(response.rows[0]);
