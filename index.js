@@ -64,7 +64,7 @@ app.delete('/api/notes/:id', async (req, res, next) => {
 
             WHERE id=$1
         `;
-        const response = await client.query(SQL, []);
+        await client.query(SQL, [req.params.id]);
         res.sendStatus(204);
     } catch (ex) {
         console.error(ex);
