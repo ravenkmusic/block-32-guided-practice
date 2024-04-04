@@ -16,12 +16,12 @@ app.use(require('morgan')('dev')) // logs requests as they come
 app.post('/api/notes', async (req, res, next) => {
     try {
         const SQL = `
-            INSERT INTO notes (text) VALUES({$1}) RETURNING *
+            INSERT INTO notes (txt) VALUES($1) RETURNING *
             `;
         const response = await client.query(SQL, [req.body.txt]);
         res.send(response.rows[0]);
     } catch (ex) {
-        
+        next(ex);
     }
 });
 
@@ -33,7 +33,7 @@ app.get('/api/notes', async (req, res, next) => {
         const response = await client.query(SQL);
         res.send(response.rows);
     } catch (ex) {
-        console.error(ex);
+        next(ex);
     }
 });
 
@@ -44,14 +44,14 @@ app.put('/api/notes/:id', async (req, res, next) => {
         const SQL = `
             UPDATE notes
 
-            SET txt=$1, ranking=$2, upated_at=now()
+            SET txt=$1, ranking=$2, updated_at=now()
             
             WHERE id=$3 RETURNING *
         `;
         const response = await client.query(SQL, [req.body.txt, req.body.ranking, req.params.id]);
         res.send(response.rows[0])
     } catch (ex) {
-        console.error(ex);
+        next(ex);
     }
 })
 
@@ -62,12 +62,12 @@ app.delete('/api/notes/:id', async (req, res, next) => {
         const SQL = `
             DELETE from notes
 
-            WHERE id=$1
+            WHERE id= $1
         `;
         await client.query(SQL, [req.params.id]);
         res.sendStatus(204);
     } catch (ex) {
-        console.error(ex);
+        next(ex);
     }
 })
 
