@@ -18,7 +18,7 @@ app.post('/api/notes', async (req, res, next) => {
         const SQL = `
             INSERT INTO notes (txt) VALUES($1) RETURNING *
             `;
-        const response = await client.query(SQL, [req.body.txt]);
+        const response = await client.query(SQL, [req.body.txt, req.body.ranking]);
         res.send(response.rows[0]);
     } catch (error) {
         next(error);
@@ -46,14 +46,16 @@ app.put('/api/notes/:id', async (req, res, next) => {
 
             SET txt=$1, ranking=$2, updated_at=now()
             
-            WHERE id=$3 RETURNING *
+            WHERE id=$3 
+            
+            RETURNING *
         `;
         const response = await client.query(SQL, [req.body.txt, req.body.ranking, req.params.id]);
         res.send(response.rows[0])
     } catch (error) {
         next(error);
     }
-})
+});
 
 // delete
 
@@ -69,7 +71,7 @@ app.delete('/api/notes/:id', async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-})
+});
 
 
 //connect to database
@@ -87,7 +89,7 @@ async function init(){
             updated_at TIMESTAMP DEFAULT now(),
             ranking INTEGER DEFAULT 3 NOT NULL,
             txt VARCHAR(255) NOT NULL
-            )
+            );
         `;
     await client.query(SQL);
     console.log('tables created');
@@ -96,6 +98,7 @@ async function init(){
         INSERT INTO notes (txt, ranking) VALUES('Note 2', 1);
         INSERT INTO notes (txt, ranking) VALUES('Note 3', 3);
         `;
+    await client.query(SQL);
     console.log('data seeded.');
     const port = process.env.PORT || 3000; // variable for port
     app.listen(port, ()=> console.log(`Now listening on port ${port}.`)); //listens on port 3000
