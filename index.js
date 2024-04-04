@@ -20,8 +20,8 @@ app.post('/api/notes', async (req, res, next) => {
             `;
         const response = await client.query(SQL, [req.body.txt]);
         res.send(response.rows[0]);
-    } catch (ex) {
-        next(ex);
+    } catch (error) {
+        next(error);
     }
 });
 
@@ -32,8 +32,8 @@ app.get('/api/notes', async (req, res, next) => {
         const SQL = `SELECT * from notes ORDER BY created_at DESC`;
         const response = await client.query(SQL);
         res.send(response.rows);
-    } catch (ex) {
-        next(ex);
+    } catch (error) {
+        next(error);
     }
 });
 
@@ -50,8 +50,8 @@ app.put('/api/notes/:id', async (req, res, next) => {
         `;
         const response = await client.query(SQL, [req.body.txt, req.body.ranking, req.params.id]);
         res.send(response.rows[0])
-    } catch (ex) {
-        next(ex);
+    } catch (error) {
+        next(error);
     }
 })
 
@@ -66,8 +66,8 @@ app.delete('/api/notes/:id', async (req, res, next) => {
         `;
         await client.query(SQL, [req.params.id]);
         res.sendStatus(204);
-    } catch (ex) {
-        next(ex);
+    } catch (error) {
+        next(error);
     }
 })
 
